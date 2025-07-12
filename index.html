@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anime Lovers</title>
+  <style>
+    :root {
+      --primary-color: #ff3cac;
+      --secondary-color: #784ba0;
+      --bg-light: #f9f9f9;
+      --bg-dark: #1e1e2f;
+      --card-bg: white;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg-light);
+      color: #333;
+      text-align: center;
+    }
+
+    header {
+      background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 40px 20px;
+      font-size: 2.5rem;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 4px #00000050;
+    }
+
+    #language-section, #anime-section {
+      margin: 30px 20px;
+    }
+
+    select {
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 2px solid var(--primary-color);
+      background-color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    select:hover {
+      background-color: #ffe6f2;
+    }
+
+    .anime-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+      padding: 0 20px 50px;
+      animation: fadeIn 0.8s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .anime-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .anime-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .anime-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: var(--secondary-color);
+    }
+
+    .rating {
+      background: linear-gradient(to right, #f7971e, #ffd200);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      color: #222;
+      display: inline-block;
+    }
+
+    #anime-section {
+      display: none;
+    }
+
+    #language-heading {
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+      color: var(--primary-color);
+    }
+
+    @media (max-width: 600px) {
+      header {
+        font-size: 1.8rem;
+        padding: 30px 15px;
+      }
+
+      select {
+        width: 90%;
+        margin-top: 10px;
+      }
+
+      .anime-grid {
+        padding: 0 10px 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    Anime Lovers
+  </header>
+
+  <section id="language-section">
+    <h2 style="margin-bottom: 15px; font-size: 1.4rem;">Choose Your Language</h2>
+    <select id="languageSelect">
+      <option value="">-- Select Language --</option>
+      <option value="Japanese">Japanese</option>
+      <option value="English">English</option>
+      <option value="Hindi">Hindi</option>
+      <option value="Tamil">Tamil</option>
+      <option value="Telugu">Telugu</option>
+    </select>
+  </section>
+
+  <section id="anime-section">
+    <h2 id="language-heading"></h2>
+    <div class="anime-grid" id="animeGrid"></div>
+  </section>
+
+  <script>
+    const animeData = {
+      Japanese: [
+        { title: "Naruto", rating: "8.5" },
+        { title: "One Piece", rating: "9.0" },
+        { title: "Attack on Titan", rating: "9.1" }
+      ],
+      English: [
+        { title: "Death Note (Dub)", rating: "9.2" },
+        { title: "My Hero Academia", rating: "8.3" },
+        { title: "Demon Slayer", rating: "8.7" }
+      ],
+      Hindi: [
+        { title: "Shinchan", rating: "7.5" },
+        { title: "Doraemon", rating: "7.0" },
+        { title: "Beyblade", rating: "8.0" }
+      ],
+      Tamil: [
+        { title: "Dragon Ball Z", rating: "8.6" },
+        { title: "Digimon", rating: "7.8" },
+        { title: "One Punch Man", rating: "8.9" }
+      ],
+      Telugu: [
+        { title: "Pokémon", rating: "7.9" },
+        { title: "Yu-Gi-Oh!", rating: "8.1" },
+        { title: "Inazuma Eleven", rating: "8.2" }
+      ]
+    };
+
+    const languageSelect = document.getElementById("languageSelect");
+    const animeSection = document.getElementById("anime-section");
+    const animeGrid = document.getElementById("animeGrid");
+    const languageHeading = document.getElementById("language-heading");
+
+    languageSelect.addEventListener("change", function () {
+      const selectedLang = this.value;
+      animeGrid.innerHTML = "";
+      if (selectedLang && animeData[selectedLang]) {
+        languageHeading.textContent = `Popular Anime in ${selectedLang}`;
+        animeData[selectedLang].forEach(anime => {
+          const card = document.createElement("div");
+          card.className = "anime-card";
+          card.innerHTML = `
+            <div class="anime-title">${anime.title}</div>
+            <div class="rating">⭐ ${anime.rating}</div>
+          `;
+          animeGrid.appendChild(card);
+        });
+        animeSection.style.display = "block";
+      } else {
+        animeSection.style.display = "none";
+      }
+    });
+  </script>
+
+</body>
+</html>
